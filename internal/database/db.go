@@ -5,6 +5,7 @@ package database
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 )
@@ -93,6 +94,7 @@ func (db *DBModel) Connect() error {
 		db.DBConfig.UserName,
 		db.DBConfig.PassWord,
 		db.DBConfig.Host,
+		db.DBConfig.DBName,
 		db.DBConfig.CharSet,
 	)
 
@@ -101,4 +103,33 @@ func (db *DBModel) Connect() error {
 		return err
 	}
 	return nil
+}
+
+// 查询 information_schema.COLUMNS 表，获取指定表的列信息
+func (db *DBModel) GetTableColumnInfo(dbName, tableName string) ([]*TableColumn, error) {
+	// 初始化返回值
+	var (
+		tableColumn  *TableColumn
+		tableColumns = make([]*TableColumn, 0)
+	)
+
+	sql := "select * from COLUMNS where TABLE_SCHEMA = ? and TABLE_NAME = ?"
+	rows, err := db.DBEngine.Query(sql, dbName, tableName)
+	if err != nil {
+		return nil, err
+	}
+	if rows == nil {
+		return nil, errors.New("无数据")
+	}
+	// 释放资源
+	defer rows.Close()
+	// 遍历查询结果
+	for rows.Next() {
+		if err := rows.Scan(&tableColumn); err != nil {
+			log.Printf("遍历查询结果失败:%s", err)
+			return nil, err
+		}
+		tableColumns = append(tableColumns, tableColumn)
+	}
+	return tableColumns, nil
 }
