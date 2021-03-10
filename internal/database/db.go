@@ -125,6 +125,7 @@ func (db *DBModel) GetTableColumnInfo(dbName, tableName string) ([]*TableColumn,
 	defer rows.Close()
 	// 遍历查询结果
 	for rows.Next() {
+		// fixme 此处绑定数据可能存在bug，待验证
 		if err := rows.Scan(&tableColumn); err != nil {
 			log.Printf("遍历查询结果失败:%s", err)
 			return nil, err

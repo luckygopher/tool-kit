@@ -49,9 +49,9 @@ var dbToStructCmd = &cobra.Command{
 			return errors.Errorf("获取表中列的信息失败:%s", err)
 		}
 		fmt.Println(tableColumns)
-		// 创建结构体模版对象
-		// 将数据库查询结果转为结构体
-		// 将转换之后的结构体用模版解析渲染，并输出到标准控制台
+		// todo 创建结构体模版对象
+		// todo 将数据库查询结果转为结构体
+		// todo 将转换之后的结构体用模版解析渲染，并输出到标准控制台
 		return nil
 	},
 }
