@@ -1,10 +1,10 @@
 // @Description:
 // @Author: Arvin
 // @Date: 2021/3/9 11:18 下午
-package root_cmd
+package root
 
 import (
-	structCmd "github.com/qingyunjun/tool-kit/cmd/struct-cmd"
+	dbCmd "github.com/qingyunjun/tool-kit/cmd/database"
 	"github.com/spf13/cobra"
 )
 
@@ -13,7 +13,7 @@ var rootCmd = &cobra.Command{}
 
 // 初始化方法用来注册子命令
 func init() {
-	rootCmd.AddCommand(structCmd.DbToStructCmd)
+	rootCmd.AddCommand(dbCmd.DbCmd)
 }
 
 // 命令执行

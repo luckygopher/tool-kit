@@ -17,7 +17,7 @@ var name string
 var Demo = command.Command{
 	Name: "demo",
 	InitCommand: func() error {
-		fSet := flag.NewFlagSet("name", flag.ExitOnError)
+		fSet := flag.NewFlagSet("demo", flag.ExitOnError)
 		fSet.StringVar(&name, "name", "aaa", "姓名")
 		return fSet.Parse(os.Args[2:])
 	},

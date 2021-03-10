@@ -12,17 +12,21 @@ import (
 )
 
 // 创建第一个子命令
-var age int
+var (
+	age  int
+	name string
+)
 
 var Demo = command.Command{
 	Name: "demo2",
 	InitCommand: func() error {
-		fSet := flag.NewFlagSet("age", flag.ExitOnError)
+		fSet := flag.NewFlagSet("demo2", flag.ExitOnError)
 		fSet.IntVar(&age, "age", 0, "年龄")
+		fSet.StringVar(&name, "name", "", "姓名")
 		return fSet.Parse(os.Args[2:])
 	},
 	Run: func() error {
-		fmt.Println(age)
+		fmt.Println(age, name)
 		return nil
 	},
 }
