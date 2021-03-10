@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/qingyunjun/tool-kit/realization-idea/command"
+	"github.com/qingyunjun/tool-kit/demo-idea/command"
 )
 
 // 创建第一个子命令

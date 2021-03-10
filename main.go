@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"os"
 
-	rootCmd "github.com/qingyunjun/tool-kit/command/root-cmd"
+	rootCmd "github.com/qingyunjun/tool-kit/cmd/root-cmd"
 )
 
 func main() {

@@ -1,4 +1,4 @@
-// @Description:
+// @Description: 基础定义
 // @Author: Arvin
 // @Date: 2021/3/9 4:43 下午
 package command

@@ -1,16 +1,16 @@
 // @Description: 多个子命令基础实现思路,作为学习笔记
 // @Author: Arvin
 // @Date: 2021/3/9 1:04 下午
-package realization_idea
+package demo_idea
 
 import (
 	"os"
 
-	"github.com/qingyunjun/tool-kit/realization-idea/demo2"
+	"github.com/qingyunjun/tool-kit/demo-idea/demo2"
 
-	"github.com/qingyunjun/tool-kit/realization-idea/command"
+	"github.com/qingyunjun/tool-kit/demo-idea/command"
 
-	"github.com/qingyunjun/tool-kit/realization-idea/demo1"
+	"github.com/qingyunjun/tool-kit/demo-idea/demo1"
 )
 
 func init() {
