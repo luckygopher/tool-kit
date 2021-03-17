@@ -4,8 +4,6 @@
 package database
 
 import (
-	"fmt"
-
 	"github.com/pkg/errors"
 	"github.com/qingyunjun/tool-kit/internal/database"
 	"github.com/spf13/cobra"
@@ -48,10 +46,14 @@ var dbToStructCmd = &cobra.Command{
 		if err != nil {
 			return errors.Errorf("获取表中列的信息失败:%s", err)
 		}
-		fmt.Println(tableColumns)
-		// todo 创建结构体模版对象
-		// todo 将数据库查询结果转为结构体
-		// todo 将转换之后的结构体用模版解析渲染，并输出到标准控制台
+		// 创建结构体模版对象
+		tmp := database.NewStructTemplate()
+		// 将数据库查询结果转为结构体
+		tmpColumns := tmp.AssemblyColumns(tableColumns)
+		// 将转换之后的结构体用模版解析渲染，并输出到标准控制台
+		if err := tmp.Generate(TableName, tmpColumns); err != nil {
+			return errors.Errorf("渲染结构体模版错误:%s", err)
+		}
 		return nil
 	},
 }

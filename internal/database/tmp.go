@@ -3,4 +3,87 @@
 // @Date: 2021/3/10 2:11 下午
 package database
 
-// todo 待实现
+import (
+	"fmt"
+	"html/template"
+	"os"
+	"strings"
+)
+
+const structTpl = `
+type {{.TableName | ToCamelCase}} struct {
+	{{range .Columns}}{{$length := len .Comment}}{{if gt $length 0}}
+	// {{.Comment}}{{else}}// {{.Name}}{{end}}
+	{{$typeLen := len .Type}}{{if gt $typeLen 0}}{{.Name | ToCamelCase}} {{.Type}} {{.Tag}}{{else}}{{.Name}}{{end}}{{end}}
+}
+func (m *{{.TableName | ToCamelCase}}) TableName() string {
+	return "{{.TableName}}"
+}
+`
+
+type StructTemplate struct {
+	structTpl string
+}
+
+// 存储转换后的 Go 结构体中的所有字段信息
+type StructColumn struct {
+	Name    string
+	Type    string
+	Tag     string
+	Comment string
+}
+
+// 存储最终用于渲染的模版对象信息
+type StructTemplateDB struct {
+	TableName string
+	Columns   []*StructColumn
+}
+
+func NewStructTemplate() *StructTemplate {
+	return &StructTemplate{structTpl: structTpl}
+}
+
+// 对通过查询 COLUMNS 表所组装得到的 tbColumns 进行进一步的分解和转换
+func (t *StructTemplate) AssemblyColumns(tbColumns []*TableColumn) []*StructColumn {
+	tplColumns := make([]*StructColumn, 0, len(tbColumns))
+	for _, column := range tbColumns {
+		// 取得字段数据类型
+		dataType := DBTypeToStructType[column.DataType]
+		// 判断是否有无符号
+		if strings.Contains(column.ColumnType, "unsigned") {
+			dataType = fmt.Sprintf("u%s", dataType)
+		}
+		// 组装最终数据
+		tplColumns = append(tplColumns, &StructColumn{
+			Name:    column.ColumnName,
+			Type:    dataType,
+			Tag:     fmt.Sprintf("`gorm:\"column:"+"%s"+"\"`", column.ColumnName),
+			Comment: column.ColumnComment,
+		})
+	}
+	return tplColumns
+}
+
+// 用转换之后的结构体去渲染模版
+// template.Must 方法判断返回的 *Template 是否有错误，引发panic，导致程序崩溃(如果模版解析错误，则直接让程序挂掉)
+func (t *StructTemplate) Generate(tableName string, tmpColumns []*StructColumn) error {
+	tpl := template.Must(template.New("sql-struct").Funcs(template.FuncMap{
+		"ToCamelCase": func(s string) string {
+			// 蛇形转大写驼峰
+			s = strings.Replace(s, "_", " ", -1)
+			// Title 方法将按空格分割的字符串首字母转为大写
+			s = strings.Title(s)
+			return strings.Replace(s, " ", "", -1)
+		},
+	}).Parse(t.structTpl))
+	// 传入模版的数据
+	tplDB := StructTemplateDB{
+		TableName: tableName,
+		Columns:   tmpColumns,
+	}
+	// TODO 目前是输出到屏幕，后续改为输出到生成对应的文件中
+	if err := tpl.Execute(os.Stdout, tplDB); err != nil {
+		return err
+	}
+	return nil
+}

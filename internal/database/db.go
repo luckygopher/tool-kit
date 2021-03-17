@@ -8,6 +8,8 @@ import (
 	"errors"
 	"fmt"
 	"log"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 // 数据库连接的核心对象
