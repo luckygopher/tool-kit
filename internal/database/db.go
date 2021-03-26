@@ -110,12 +110,9 @@ func (db *DBModel) Connect() error {
 // 查询 information_schema.COLUMNS 表，获取指定表的列信息
 func (db *DBModel) GetTableColumnInfo(dbName, tableName string) ([]*TableColumn, error) {
 	// 初始化返回值
-	var (
-		tableColumn  *TableColumn
-		tableColumns = make([]*TableColumn, 0)
-	)
+	tableColumns := make([]*TableColumn, 0)
 
-	sql := "select * from COLUMNS where TABLE_SCHEMA = ? and TABLE_NAME = ?"
+	sql := "select COLUMN_NAME,DATA_TYPE,COLUMN_KEY,IS_NULLABLE,COLUMN_TYPE, COLUMN_COMMENT from COLUMNS where TABLE_SCHEMA = ? and TABLE_NAME = ?"
 	rows, err := db.DBEngine.Query(sql, dbName, tableName)
 	if err != nil {
 		return nil, err
@@ -127,12 +124,20 @@ func (db *DBModel) GetTableColumnInfo(dbName, tableName string) ([]*TableColumn,
 	defer rows.Close()
 	// 遍历查询结果
 	for rows.Next() {
-		// fixme 此处绑定数据可能存在bug，待验证
-		if err := rows.Scan(&tableColumn); err != nil {
+		var tableColumn TableColumn
+		// 此处绑定数据
+		if err := rows.Scan(
+			&tableColumn.ColumnName,
+			&tableColumn.DataType,
+			&tableColumn.ColumnKey,
+			&tableColumn.IsNullable,
+			&tableColumn.ColumnType,
+			&tableColumn.ColumnComment,
+		); err != nil {
 			log.Printf("遍历查询结果失败:%s", err)
 			return nil, err
 		}
-		tableColumns = append(tableColumns, tableColumn)
+		tableColumns = append(tableColumns, &tableColumn)
 	}
 	return tableColumns, nil
 }
