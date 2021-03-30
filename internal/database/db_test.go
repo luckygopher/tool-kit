@@ -16,7 +16,8 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-// fixme 此单测存在bug
+// sql.Open 不会创建连接 ，只会创建一个DB实例
+// 同时会创建一个go程来管理该DB实例的一个连接池(是长连接，但不是在Open的时候创建)
 func TestDBModel_Connect(t *testing.T) {
 	// 测试数据结构
 	type data struct {
@@ -30,9 +31,9 @@ func TestDBModel_Connect(t *testing.T) {
 			name: "测试连接方法",
 			param: &DBConfig{
 				DBType:   "mysql",
-				Host:     "127.0.0.1:3307",
+				Host:     "127.0.0.1:2306",
 				DBName:   "test",
-				UserName: "root",
+				UserName: "test",
 				PassWord: "",
 				CharSet:  "utf8mb4",
 			},
