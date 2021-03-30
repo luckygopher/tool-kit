@@ -20,6 +20,7 @@ var (
 	UserName  string // 用户名
 	PassWord  string // 密码
 	CharSet   string // 字符集
+	FilePath  string // 输出文件路径
 )
 
 // 数据库操作子命令 dts 定义
@@ -48,9 +49,11 @@ var dbToStructCmd = &cobra.Command{
 		}
 		// 创建结构体模版对象
 		tmp := database.NewStructTemplate()
+		// 设置输出文件路径
+		tmp.FilePath = FilePath
 		// 将数据库查询结果转为结构体
 		tmpColumns := tmp.AssemblyColumns(tableColumns)
-		// 将转换之后的结构体用模版解析渲染，并输出到标准控制台
+		// 将转换之后的结构体用模版解析渲染，并输出
 		if err := tmp.Generate(TableName, tmpColumns); err != nil {
 			return errors.Errorf("渲染结构体模版错误:%s", err)
 		}
@@ -67,4 +70,5 @@ func init() {
 	dbToStructCmd.Flags().StringVarP(&UserName, "user", "u", "", "用户名")
 	dbToStructCmd.Flags().StringVarP(&PassWord, "password", "p", "", "密码")
 	dbToStructCmd.Flags().StringVarP(&CharSet, "charset", "c", "utf8mb4", "字符集")
+	dbToStructCmd.Flags().StringVarP(&FilePath, "filepath", "f", "", "输出文件路径")
 }

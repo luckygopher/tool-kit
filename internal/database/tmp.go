@@ -5,13 +5,12 @@ package database
 
 import (
 	"fmt"
-	"html/template"
 	"os"
 	"strings"
+	"text/template"
 )
 
-const structTpl = `
-type {{.TableName | ToCamelCase}} struct {
+const structTpl = `type {{.TableName | ToCamelCase}} struct {
 	{{range .Columns}}{{$length := len .Comment}}{{if gt $length 0}}
 	// {{.Comment}}{{else}}// {{.Name}}{{end}}
 	{{$typeLen := len .Type}}{{if gt $typeLen 0}}{{.Name | ToCamelCase}} {{.Type}} {{.Tag}}{{else}}{{.Name}}{{end}}{{end}}
@@ -22,7 +21,8 @@ func (m *{{.TableName | ToCamelCase}}) TableName() string {
 `
 
 type StructTemplate struct {
-	structTpl string
+	structTpl string // 模版内容
+	FilePath  string // 输出文件路径
 }
 
 // 存储转换后的 Go 结构体中的所有字段信息
@@ -67,6 +67,10 @@ func (t *StructTemplate) AssemblyColumns(tbColumns []*TableColumn) []*StructColu
 // 用转换之后的结构体去渲染模版
 // template.Must 方法判断返回的 *Template 是否有错误，引发panic，导致程序崩溃(如果模版解析错误，则直接让程序挂掉)
 func (t *StructTemplate) Generate(tableName string, tmpColumns []*StructColumn) error {
+	var (
+		writer *os.File = os.Stdout // 默认输出到终端
+		err    error
+	)
 	tpl := template.Must(template.New("sql-struct").Funcs(template.FuncMap{
 		"ToCamelCase": func(s string) string {
 			// 蛇形转大写驼峰
@@ -81,8 +85,14 @@ func (t *StructTemplate) Generate(tableName string, tmpColumns []*StructColumn) 
 		TableName: tableName,
 		Columns:   tmpColumns,
 	}
-	// TODO 目前是输出到屏幕，后续改为输出到生成对应的文件中
-	if err := tpl.Execute(os.Stdout, tplDB); err != nil {
+	// 如果未指定输出文件路径
+	if t.FilePath != "" {
+		if writer, err = os.OpenFile(t.FilePath, os.O_WRONLY|os.O_CREATE, 0666); err != nil {
+			return err
+		}
+	}
+	// 渲染模版
+	if err = tpl.Execute(writer, tplDB); err != nil {
 		return err
 	}
 	return nil
