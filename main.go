@@ -11,6 +11,7 @@ import (
 )
 
 func main() {
+	// 工具入口
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
