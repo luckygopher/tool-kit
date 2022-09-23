@@ -37,9 +37,10 @@ func dbToStructCmd() *cli.Command {
 		Action: func(ctx *cli.Context) error {
 			config.ParseConfig(configPath)
 			// 获取数据库对象
-			dbObj := db.NewDBModel(config.C.Database, InformationDB)
+			config.C.Database.DBName = InformationDB
+			dbObj := db.NewClient(config.C.Database)
 			// 连接数据库
-			if err := dbObj.Connect(); err != nil {
+			if _, err := dbObj.ConnectDB(); err != nil {
 				return errors.Errorf("数据库连接失败:%s", err)
 			}
 			// 获取表中列的信息

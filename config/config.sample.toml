@@ -1,3 +1,6 @@
+ENV = "release"
+Debug = false
+
 [Database]
 DBType = "postgres"
 Host = "localhost"

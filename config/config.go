@@ -9,7 +9,9 @@ import (
 var C = Config{}
 
 type Config struct {
-	Database db.DBConfig `toml:"Database" yaml:"database"`
+	ENV      string    `toml:"ENV" yaml:"env"`
+	Debug    bool      `toml:"Debug" yaml:"debug"`
+	Database db.Config `toml:"Database" yaml:"database"`
 }
 
 func ParseConfig(filePath string) {
