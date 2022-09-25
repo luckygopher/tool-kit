@@ -59,8 +59,8 @@ func (c Client) Start() error {
 		}
 		c.logger.Error("get st failed", zap.Error(err))
 	}
-	// 当前时间+500毫秒
-	now := time.Now().Add(500 * time.Millisecond)
+	// 当前时间+50毫秒
+	now := time.Now().Add(50 * time.Millisecond)
 	if now.Before(startDateTime) {
 		c.logger.Info("获取st成功，但是还未到抢购时间，等待中......")
 		time.Sleep(startDateTime.Sub(now))
