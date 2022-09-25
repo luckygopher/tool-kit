@@ -59,8 +59,8 @@ func (c Client) Start() error {
 		}
 		c.logger.Error("get st failed", zap.Error(err))
 	}
-	// 当前时间+50毫秒
-	now := time.Now().Add(50 * time.Millisecond)
+	// 当前时间+10毫秒
+	now := time.Now().Add(10 * time.Millisecond)
 	if now.Before(startDateTime) {
 		c.logger.Info("获取st成功，但是还未到抢购时间，等待中......")
 		time.Sleep(startDateTime.Sub(now))
@@ -131,6 +131,8 @@ func (c Client) Subscribe(vaccineID, memberID, idCard, st string) (string, error
 	headers := c.CommonHeader()
 	headers["ecc-hs"] = c.EccHs(vaccineID, memberID, st)
 	result := Subscribe{}
+	// 设置代理
+	httpclient.HTTPClient.SetProxy(c.cfg.Proxy)
 	resp, err := httpclient.HTTPClient.Get(context.TODO(), url, headers, nil, params, &result)
 	if err != nil {
 		c.logger.Error("get failed", zap.Error(err))

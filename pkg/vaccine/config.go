@@ -11,4 +11,5 @@ type Config struct {
 	VaccineID  string `toml:"VaccineID" yaml:"vaccine_id"`                  // 接种疫苗id
 	Total      int    `toml:"Total" yaml:"total" default:"5"`               // 开启的协程数量
 	Step       int    `toml:"Step" yaml:"step" default:"200"`               // 每个协程抢购时间间隔，单位毫秒
+	Proxy      string `toml:"Proxy" yaml:"proxy"`                           // 代理地址
 }

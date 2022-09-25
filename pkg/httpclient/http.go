@@ -19,7 +19,7 @@ func newHTTPClient(cfg Config) *http.Client {
 				KeepAlive: 30 * time.Second,
 				DualStack: true,
 			}).DialContext,
-			DisableKeepAlives:     false,
+			DisableKeepAlives:     cfg.DisableKeepAlives,
 			ForceAttemptHTTP2:     true,
 			MaxIdleConns:          cfg.MaxIdleConns,
 			MaxIdleConnsPerHost:   cfg.MaxIdleConnsPerHost,

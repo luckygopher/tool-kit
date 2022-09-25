@@ -13,6 +13,7 @@ type Config struct {
 	MaxIdleConns        int    `toml:"MaxIdleConns" yaml:"max_idle_conns" default:"0"`                   // 最大空闲
 	MaxIdleConnsPerHost int    `toml:"MaxIdleConnsPerHost" yaml:"max_idle_conns_per_host" default:"500"` // 单个host最大空闲
 	MaxConnsPerHost     int    `toml:"MaxConnsPerHost" yaml:"max_conns_per_host" default:"2000"`         // 单个host允许最大连接
+	DisableKeepAlives   bool   `toml:"DisableKeepAlives" yaml:"disable_keep_alives"`                     // 为true时，强制禁用HTTP协议的keep-alive功能
 }
 
 func (cfg Config) GetHTTPTimeout() time.Duration {

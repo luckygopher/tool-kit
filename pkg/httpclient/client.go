@@ -109,6 +109,10 @@ func (c Client) PostForm(ctx context.Context, url string, param map[string]strin
 	return r.Body(), nil
 }
 
+func (c Client) SetProxy(proxyUrl string) {
+	c.restyClient.SetProxy(proxyUrl)
+}
+
 func (c Client) EncodeWithSha256(rawStr string) (string, error) {
 	h := sha256.New()
 	_, err := h.Write([]byte(rawStr))
