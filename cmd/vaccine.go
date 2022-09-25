@@ -18,6 +18,7 @@ func vaccine() *cli.Command {
 	cmd.Subcommands = append(cmd.Subcommands, list())
 	cmd.Subcommands = append(cmd.Subcommands, area())
 	cmd.Subcommands = append(cmd.Subcommands, member())
+	cmd.Subcommands = append(cmd.Subcommands, FindAreaVaccine())
 	return cmd
 }
 
@@ -70,7 +71,7 @@ func list() *cli.Command {
 			}
 			setups.apply()
 			vaccineClient := vaccineImp.NewClient(config.C.Vaccine, zap.L())
-			res, err := vaccineClient.GetVaccineList()
+			res, err := vaccineClient.GetVaccineList(config.C.Vaccine.RegionCode)
 			if err != nil {
 				return err
 			}
@@ -109,7 +110,7 @@ func area() *cli.Command {
 			}
 			setups.apply()
 			vaccineClient := vaccineImp.NewClient(config.C.Vaccine, zap.L())
-			res, err := vaccineClient.GetArea()
+			res, err := vaccineClient.GetArea(config.C.Vaccine.ParentCode)
 			if err != nil {
 				return err
 			}
@@ -148,6 +149,34 @@ func member() *cli.Command {
 			}
 			for _, datum := range res.Data {
 				fmt.Printf("%+v\n", datum)
+			}
+			return nil
+		},
+	}
+	return cmd
+}
+
+func FindAreaVaccine() *cli.Command {
+	var configPath string
+	configPathFlag := &cli.StringFlag{
+		Name: "configPath", Usage: "指定配置文件路径", Aliases: []string{"c"}, Destination: &configPath,
+	}
+	cmd := &cli.Command{
+		Name:  "find",
+		Usage: "查询某省当前有苗的地区及该地区可秒疫苗",
+		Flags: []cli.Flag{
+			configPathFlag,
+		},
+		Action: func(ctx *cli.Context) error {
+			config.ParseConfig(configPath)
+			setups := Setup{
+				SetLogger,
+				SetupHTTP,
+			}
+			setups.apply()
+			vaccineClient := vaccineImp.NewClient(config.C.Vaccine, zap.L())
+			if err := vaccineClient.FindAreaVaccine(config.C.Vaccine.ParentCode); err != nil {
+				return err
 			}
 			return nil
 		},

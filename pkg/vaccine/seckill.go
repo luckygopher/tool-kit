@@ -22,7 +22,7 @@ func (c Client) Start() error {
 		err       error
 	)
 	// 先获取指定地区的疫苗列表
-	vaccines, err := c.GetVaccineList()
+	vaccines, err := c.GetVaccineList(c.cfg.RegionCode)
 	if err != nil {
 		c.logger.Error("get vaccine list failed", zap.Error(err))
 		return errors.New(err.Error())
