@@ -59,8 +59,8 @@ func (c Client) Start() error {
 		}
 		c.logger.Error("get st failed", zap.Error(err))
 	}
-	// 当前时间+10毫秒
-	now := time.Now().Add(10 * time.Millisecond)
+	// 当前时间+50毫秒
+	now := time.Now().Add(50 * time.Millisecond)
 	if now.Before(startDateTime) {
 		c.logger.Info("获取st成功，但是还未到抢购时间，等待中......")
 		time.Sleep(startDateTime.Sub(now))
@@ -105,9 +105,10 @@ func (c Client) Seckill(vaccineID, st string) {
 				c.logger.Info(fmt.Sprintf("当前第%d个协程秒杀成功！", i+1), zap.String("resp", resp))
 				success = true
 			}
+			fmt.Printf("秒杀结果:%s\n", resp)
 		}(vaccineID, st)
-		c.logger.Info(fmt.Sprintf("正在休息%d毫秒，等待下一个协程秒杀", c.cfg.Step))
-		time.Sleep(time.Duration(c.cfg.Step) * time.Millisecond)
+		// c.logger.Info(fmt.Sprintf("正在休息%d毫秒，等待下一个协程秒杀", c.cfg.Step))
+		// time.Sleep(time.Duration(c.cfg.Step) * time.Millisecond)
 		wg.Done()
 	}
 	wg.Wait()
