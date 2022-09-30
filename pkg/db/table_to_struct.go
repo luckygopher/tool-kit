@@ -6,7 +6,10 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/qingyunjun/tool-kit/pkg/db/define"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
+
+	"github.com/luckygopher/tool-kit/pkg/db/define"
 )
 
 const structTpl = `type {{.TableName | ToCamelCase}} struct {
@@ -75,8 +78,8 @@ func (t *StructTemplate) Generate(tableName string, tmpColumns []*StructColumn) 
 			// 蛇形转大写驼峰
 			s = strings.Replace(s, "_", " ", -1)
 			// Title 方法将按空格分割的字符串首字母转为大写
-			s = strings.Title(s)
-			return strings.Replace(s, " ", "", -1)
+			title := cases.Title(language.English).String(s)
+			return strings.Replace(title, " ", "", -1)
 		},
 	}).Parse(t.structTpl))
 	// 传入模版的数据

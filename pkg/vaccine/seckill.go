@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/qingyunjun/tool-kit/pkg/httpclient"
+	"github.com/luckygopher/tool-kit/pkg/httpclient"
 	"go.uber.org/zap"
 )
 

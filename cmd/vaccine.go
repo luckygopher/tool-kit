@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/qingyunjun/tool-kit/config"
-	vaccineImp "github.com/qingyunjun/tool-kit/pkg/vaccine"
+	"github.com/luckygopher/tool-kit/config"
+	vaccineImp "github.com/luckygopher/tool-kit/pkg/vaccine"
 	"github.com/urfave/cli/v2"
 	"go.uber.org/zap"
 )

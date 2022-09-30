@@ -5,13 +5,13 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/qingyunjun/tool-kit/pkg/document"
+	"github.com/luckygopher/tool-kit/pkg/document"
 
 	"github.com/urfave/cli/v2"
 
+	"github.com/luckygopher/tool-kit/config"
+	"github.com/luckygopher/tool-kit/pkg/db"
 	"github.com/pkg/errors"
-	"github.com/qingyunjun/tool-kit/config"
-	"github.com/qingyunjun/tool-kit/pkg/db"
 )
 
 func dbToDocxCmd() *cli.Command {

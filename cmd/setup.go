@@ -1,14 +1,18 @@
 package cmd
 
 import (
-	"github.com/qingyunjun/tool-kit/config"
-	"github.com/qingyunjun/tool-kit/pkg/httpclient"
+	"github.com/luckygopher/tool-kit/config"
+	"github.com/luckygopher/tool-kit/pkg/httpclient"
 	"go.uber.org/zap"
 )
 
-type SetupFunc func() error
-type Setup []SetupFunc
+// 初始化设置函数
+type setupFunc func() error
 
+// Setup 初始化设置函数切片
+type Setup []setupFunc
+
+// 执行初始化设置
 func (s Setup) apply() {
 	for _, fn := range s {
 		if err := fn(); err != nil {

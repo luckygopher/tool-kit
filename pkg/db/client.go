@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/qingyunjun/tool-kit/pkg/db/define"
+	"github.com/luckygopher/tool-kit/pkg/db/define"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"

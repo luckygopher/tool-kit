@@ -2,9 +2,9 @@ package config
 
 import (
 	"github.com/jinzhu/configor"
-	"github.com/qingyunjun/tool-kit/pkg/db"
-	"github.com/qingyunjun/tool-kit/pkg/httpclient"
-	"github.com/qingyunjun/tool-kit/pkg/vaccine"
+	"github.com/luckygopher/tool-kit/pkg/db"
+	"github.com/luckygopher/tool-kit/pkg/httpclient"
+	"github.com/luckygopher/tool-kit/pkg/vaccine"
 	"go.uber.org/zap"
 )
 

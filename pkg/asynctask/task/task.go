@@ -2,7 +2,7 @@ package task
 
 import (
 	"github.com/RichardKnop/machinery/v1/tasks"
-	"github.com/qingyunjun/tool-kit/pkg/asynctask/machinery"
+	"github.com/luckygopher/tool-kit/pkg/asynctask/machinery"
 )
 
 const (

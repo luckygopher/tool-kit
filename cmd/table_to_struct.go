@@ -1,9 +1,9 @@
 package cmd
 
 import (
+	"github.com/luckygopher/tool-kit/config"
+	"github.com/luckygopher/tool-kit/pkg/db"
 	"github.com/pkg/errors"
-	"github.com/qingyunjun/tool-kit/config"
-	"github.com/qingyunjun/tool-kit/pkg/db"
 	"github.com/urfave/cli/v2"
 )
 
