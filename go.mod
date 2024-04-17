@@ -1,6 +1,6 @@
 module github.com/luckygopher/tool-kit
 
-go 1.18
+go 1.22.2
 
 require (
 	baliance.com/gooxml v1.0.1
