@@ -30,7 +30,7 @@ jobs:
       - name: build
         run: |
           make build_linux
-          echo pwd
+          pwd
           cd bin/
           tool -h
           tool action2
