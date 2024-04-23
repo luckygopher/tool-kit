@@ -1,0 +1,37 @@
+name: Tool Deployment
+
+on:
+  push:
+    branches:
+      - staging
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test_action_job1:
+    name: test action
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'pull_request')
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+      - name: build
+        run: |
+          make build_linux
+          ./bin/tool -h
+          ./bin/tool action1
+
+  test_action_job2:
+    name: test action
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/staging' && github.event_name == 'push'
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+      - name: build
+        run: |
+          make build_linux
+          ./bin/tool -h
+          ./bin/tool action2

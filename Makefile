@@ -6,7 +6,7 @@ generate:
 	@echo "+ $@"
 	go generate ./...
 
-build_mac: generate
+build_linux:
 	@echo "+ build"
 	go build -o ${OUTPUT_DIR}/${PACKAGE}
 
