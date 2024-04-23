@@ -1,0 +1,35 @@
+name: Tool Deployment
+
+on:
+  push:
+    branches:
+      - staging
+      - main
+
+jobs:
+  test_action_job1:
+    name: test action
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: checkout repository
+        uses: action/checkout@v4
+      - name: build
+        run: |
+          make build_linux
+          cd bin/
+          tool -h
+          tool action1
+  test_action_job2:
+    name: test action
+    runs-on: windows-latest
+    if: github.ref == 'refs/heads/staging' && github.event_name == 'push'
+    steps:
+      - name: checkout repository
+        uses: action/checkout@v4
+      - name: build
+        run: |
+          make build_windows
+          cd bin/
+          tool.exe -h
+          tool.exe action2
