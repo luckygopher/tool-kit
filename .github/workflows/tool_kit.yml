@@ -22,14 +22,15 @@ jobs:
           tool action1
   test_action_job2:
     name: test action
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/staging' && github.event_name == 'push'
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
       - name: build
         run: |
-          make build_windows
+          make build_linux
+          echo pwd
           cd bin/
-          tool.exe -h
-          tool.exe action2
+          tool -h
+          tool action2

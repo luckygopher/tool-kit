@@ -10,10 +10,6 @@ build_linux:
 	@echo "+ build"
 	go build -o ${OUTPUT_DIR}/${PACKAGE}
 
-build_windows:
+build_windows: generate
 	@echo "+ build"
 	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o ${OUTPUT_DIR}/${PACKAGE}.exe
-
-build_mac: generate
-	@echo "+ build"
-	go build -o ${OUTPUT_DIR}/${PACKAGE}
