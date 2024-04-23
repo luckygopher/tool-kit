@@ -17,9 +17,8 @@ jobs:
       - name: build
         run: |
           make build_linux
-          cd bin/
-          tool -h
-          tool action1
+          ./bin/tool -h
+          ./bin/tool action1
   test_action_job2:
     name: test action
     runs-on: ubuntu-latest
@@ -30,7 +29,5 @@ jobs:
       - name: build
         run: |
           make build_linux
-          pwd
-          cd bin/
-          tool -h
-          tool action2
+          ./bin/tool -h
+          ./bin/tool action2
