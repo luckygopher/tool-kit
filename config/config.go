@@ -3,20 +3,16 @@ package config
 import (
 	"github.com/jinzhu/configor"
 	"github.com/luckygopher/tool-kit/pkg/db"
-	"github.com/luckygopher/tool-kit/pkg/httpclient"
-	"github.com/luckygopher/tool-kit/pkg/vaccine"
 	"go.uber.org/zap"
 )
 
 var C = Config{}
 
 type Config struct {
-	ENV        string            `toml:"ENV" yaml:"env"`
-	Debug      bool              `toml:"Debug" yaml:"debug"`
-	LogLevel   string            `toml:"LogLevel" yaml:"log_level"`
-	HTTPClient httpclient.Config `toml:"HTTPClient" yaml:"http_client"`
-	Database   db.Config         `toml:"Database" yaml:"database"`
-	Vaccine    vaccine.Config    `toml:"Vaccine" yaml:"vaccine"`
+	ENV      string    `toml:"ENV" yaml:"env"`
+	Debug    bool      `toml:"Debug" yaml:"debug"`
+	LogLevel string    `toml:"LogLevel" yaml:"log_level"`
+	Database db.Config `toml:"Database" yaml:"database"`
 }
 
 func ParseConfig(filePath string) {

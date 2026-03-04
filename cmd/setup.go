@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"github.com/luckygopher/tool-kit/config"
-	"github.com/luckygopher/tool-kit/pkg/httpclient"
 	"go.uber.org/zap"
 )
 
@@ -45,11 +44,5 @@ func SetLogger() error {
 
 	zap.RedirectStdLog(logger)
 	zap.ReplaceGlobals(logger)
-	return nil
-}
-
-// SetupHTTP 设置 httpclient
-func SetupHTTP() error {
-	httpclient.InitHTTPClient(config.C.HTTPClient, zap.L())
 	return nil
 }
