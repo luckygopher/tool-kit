@@ -71,6 +71,27 @@ func UUID() string {
 	return uuid.New().String()
 }
 
+// UUIDV1 generates a UUID v1 (time-based).
+func UUIDV1() (string, error) {
+	id, err := uuid.NewUUID()
+	if err != nil {
+		return "", fmt.Errorf("uuid v1 generation failed: %w", err)
+	}
+	return id.String(), nil
+}
+
+// FormatUUID applies formatting options to a UUID string.
+// noDash removes hyphens; upper converts to uppercase.
+func FormatUUID(id string, noDash, upper bool) string {
+	if noDash {
+		id = strings.ReplaceAll(id, "-", "")
+	}
+	if upper {
+		id = strings.ToUpper(id)
+	}
+	return id
+}
+
 // RandString generates a random string of length n with the given character set type.
 // typ: "alpha", "num", "mix"
 func RandString(n int, typ string) (string, error) {
