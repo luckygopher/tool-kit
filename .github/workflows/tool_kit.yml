@@ -8,30 +8,55 @@ on:
   pull_request:
     branches:
       - main
+      - dev
 
 jobs:
   test_action_job1:
-    name: test action
+    name: test action (main)
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'pull_request')
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
-      - name: build
+      - name: setup go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: build and test
         run: |
           make build_linux
           ./bin/tool -h
-          ./bin/tool action1
+          go test ./...
+
+  test_action_pr:
+    name: test action (PR)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+      - name: setup go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: build and test
+        run: |
+          make build_linux
+          ./bin/tool -h
+          go test ./...
 
   test_action_job2:
-    name: test action
+    name: test action (staging)
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/staging' && github.event_name == 'push'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/staging'
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
+      - name: setup go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
       - name: build
         run: |
           make build_linux
           ./bin/tool -h
-          ./bin/tool action2
